@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bistro con Amore | Vini e Cucina — Verona</title>
+  <meta name="description" content="Bistro con Amore: cucina gourmet e vini di ricerca nel cuore di Verona. Tavoli all'aperto, cena con musica lirica. Aperto tutti i giorni tranne martedì.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#fdf8ef',
+              100: '#f9edcf',
+              400: '#d4a85c',
+              500: '#c5a059',
+              600: '#a8843d',
+              900: '#3d2e10'
+            },
+            dark: {
+              DEFAULT: '#0a0a0b',
+              800: '#121214',
+              700: '#1c1c1f',
+              600: '#2a2a2e',
+              500: '#3a3a40'
+            }
+          },
+          fontFamily: {
+            serif:   ['Playfair Display', 'Georgia', 'serif'],
+            display: ['Space Grotesk', 'ui-sans-serif', 'sans-serif'],
+            sans:    ['Inter', 'ui-sans-serif', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --accent: #c5a059;
+      --accent-hover: #d4b572;
+      --bg: #0a0a0b;
+      --bg2: #121214;
+      --text: #f5f5f7;
+      --muted: #8a8a90;
+      --border: rgba(255,255,255,0.07);
+      --transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--dark-600,#2a2a2e); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ─── Selection ─── */
+    ::selection { background: var(--accent); color: #000; }
+
+    /* ─── Fade-up (hero sections) ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── Reveal items ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* ─── Fast fade for menu ─── */
+    .fade-in-fast { animation: fadeIn 0.4s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Navbar ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem;
+      height: 80px;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    header.scrolled {
+      background: rgba(10,10,11,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      height: 64px;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      margin-left: 2rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      opacity: 0.65;
+      transition: var(--transition);
+    }
+    nav a:hover { opacity: 1; color: var(--accent); }
+
+    /* ─── CTA btn ─── */
+    .btn-outline {
+      display: inline-block;
+      padding: 0.65rem 1.8rem;
+      border: 1px solid var(--accent);
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative; overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+    }
+    .btn-outline::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--accent);
+      z-index: -1;
+      transition: var(--transition);
+    }
+    .btn-outline:hover { color: #000; }
+    .btn-outline:hover::before { left: 0; }
+
+    .btn-solid {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--accent);
+      color: #000;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--accent);
+    }
+    .btn-solid:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+    /* ─── Badge ─── */
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ─── Hero (Scroll Expansion from R-3) ─── */
+    #hero-section { overflow-x: hidden; }
+    #hero-media {
+      position: absolute;
+      z-index: 0;
+      top: 50%; left: 50%;
+      border-radius: 4px;
+      box-shadow: 0 0 80px rgba(0,0,0,0.7);
+    }
+    #hero-content {
+      transition: opacity 0.5s ease;
+    }
+    .hero-split-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(3rem, 8vw, 8rem);
+      text-shadow: 0 4px 40px rgba(0,0,0,0.9);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── Gallery (R-3 grid + R-6 hover overlay) ─── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 280px;
+      gap: 6px;
+    }
+    .gallery-item { position: relative; overflow: hidden; cursor: pointer; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1), filter 0.5s ease;
+      filter: brightness(0.82);
+    }
+    .gallery-item:hover img { transform: scale(1.06); filter: brightness(0.55); }
+    .gallery-item .overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1.5rem 1.2rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      opacity: 0;
+      transform: translateY(10px);
+      transition: var(--transition);
+    }
+    .gallery-item:hover .overlay { opacity: 1; transform: translateY(0); }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item.wide { grid-column: span 2; }
+
+    /* ─── Menu tabs (R-6 style) ─── */
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    /* ─── Dotted leader menu (R-6) ─── */
+    .menu-item {
+      display: flex; flex-direction: column; cursor: default;
+    }
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.4rem;
+    }
+    .menu-item-header h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+    .menu-item:hover .menu-item-header h4 { color: var(--accent); }
+    .dotted-line {
+      flex: 1;
+      border-bottom: 1px dotted rgba(255,255,255,0.15);
+      margin: 0 0.8rem;
+      position: relative; top: -6px;
+      transition: border-color 0.3s;
+    }
+    .menu-item:hover .dotted-line { border-color: rgba(197,160,89,0.4); }
+    .menu-price {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .menu-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      transition: color 0.3s;
+    }
+    .menu-item:hover .menu-desc { color: rgba(255,255,255,0.55); }
+
+    /* ─── Testimonial carousel (R-6) ─── */
+    .testimonial-carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .testimonial-carousel::-webkit-scrollbar { display: none; }
+    .testimonial-card {
+      min-width: min(360px, calc(100vw - 3rem));
+      background: var(--bg2);
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color 0.3s;
+    }
+    .testimonial-card:hover { border-color: rgba(197,160,89,0.3); }
+
+    /* ─── Peak parallax ─── */
+    .peak-section {
+      position: relative;
+      height: 70vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    /* ─── Mobile menu ─── */
+    #mobileMenu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      background: rgba(10,10,11,0.97);
+      backdrop-filter: blur(20px);
+      padding: 100px 2rem 2rem;
+      flex-direction: column;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    #mobileMenu.open { display: flex; }
+    #mobileMenu a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      opacity: 0.7;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    #mobileMenu a:hover { opacity: 1; color: var(--accent); }
+
+    /* ─── Footer ─── */
+    footer { border-top: 1px solid var(--border); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      header { padding: 0 1.5rem; }
+      header nav, header .btn-outline { display: none; }
+      #hamburger { display: flex; }
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 200px;
+      }
+      .gallery-item.wide { grid-column: span 2; }
+      .gallery-item.tall { grid-row: span 1; }
+      .intro-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .menu-grid { grid-template-columns: 1fr !important; gap: 2rem 0 !important; }
+      #contatti-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+      #footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+      .stats-row { flex-wrap: wrap; gap: 1.5rem 3rem; }
+      .tab-btn { padding: 0.75rem 1rem; min-height: 44px; }
+      .testimonial-card { padding: 1.8rem; }
+    }
+    @media (min-width: 769px) {
+      #hamburger { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ───────────────────── NAVBAR ───────────────────── -->
+  <header id="main-header">
+    <a href="#" class="logo">Bistro <span>con Amore</span></a>
+    <nav>
+      <a href="#storia">La Nostra Storia</a>
+      <a href="#piatti">La Cucina</a>
+      <a href="#menu">Menu</a>
+      <a href="#ospiti">Recensioni</a>
+      <a href="#contatti">Contatti</a>
+    </nav>
+    <a href="#prenota" class="btn-outline">Prenota un tavolo</a>
+    <button id="hamburger" style="background:none;border:none;color:var(--text);cursor:pointer;padding:0.5rem;" aria-label="Menu">
+      <iconify-icon icon="solar:hamburger-menu-linear" width="24"></iconify-icon>
+    </button>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div id="mobileMenu" role="navigation">
+    <a href="#storia">La Nostra Storia</a>
+    <a href="#piatti">La Cucina</a>
+    <a href="#menu">Menu</a>
+    <a href="#ospiti">Recensioni</a>
+    <a href="#contatti">Contatti</a>
+    <a href="#prenota" style="color:var(--accent);opacity:1;border-bottom:none;">Prenota un tavolo →</a>
+  </div>
+
+  <!-- ───────────────────── HERO (Scroll Expansion) ───────────────────── -->
+  <section id="hero-section">
+    <div style="position:relative; min-height:100dvh; display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+
+      <!-- BG overlay che svanisce -->
+      <div id="hero-bg" style="position:absolute;inset:0;z-index:0;transition:opacity 0.1s;">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1920&auto=format&fit=crop" alt="Bistro con Amore Verona" style="width:100%;height:100%;object-fit:cover;object-position:center;">
+        <div style="position:absolute;inset:0;background:rgba(10,10,11,0.78);"></div>
+      </div>
+
+      <!-- Container centrato -->
+      <div style="width:100%;display:flex;flex-direction:column;align-items:center;justify-center;position:relative;z-index:10;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100dvh;position:relative;">
+
+          <!-- Immagine che si espande -->
+          <div id="hero-media" style="transform:translate(-50%,-50%);width:280px;height:380px;max-width:92vw;max-height:82vh;">
+            <div style="position:relative;width:100%;height:100%;border-radius:4px;overflow:hidden;">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop" alt="Cucina Bistro con Amore" style="width:100%;height:100%;object-fit:cover;">
+              <div id="hero-media-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.18);transition:opacity 0.4s;border-radius:4px;"></div>
+            </div>
+
+            <!-- CTA che appare quando espanso -->
+            <div id="hero-content" style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;padding:2rem;">
+              <span class="badge" style="margin-bottom:1rem;">Verona, dal centro con cura</span>
+              <p style="color:rgba(255,255,255,0.9);font-size:1.15rem;text-align:center;max-width:480px;margin-bottom:2rem;line-height:1.65;font-weight:300;text-shadow:0 2px 20px rgba(0,0,0,0.8);">
+                Cucina gourmet, vini selezionati da piccoli produttori e serate con musica d'opera. Tre motivi per tornare ogni volta.
+              </p>
+              <a href="#prenota" class="btn-solid">Prenota il tuo tavolo</a>
+            </div>
+
+            <!-- Label sotto l'immagine -->
+            <div id="hero-labels" style="text-align:center;margin-top:1rem;position:relative;z-index:10;">
+              <p id="label-top" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--accent);font-size:1.1rem;letter-spacing:0.05em;transform:translateX(0);">Vini e Cucina</p>
+              <p id="label-bottom" style="color:rgba(255,255,255,0.5);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.25em;margin-top:0.4rem;transform:translateX(0);">Scorri per scoprire</p>
+            </div>
+          </div>
+
+          <!-- Titolo split -->
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;z-index:5;pointer-events:none;">
+            <h1 id="title-left" class="hero-split-text" style="transform:translateX(0);text-align:left;width:100%;padding-left:8vw;">BISTRO</h1>
+            <h1 id="title-right" class="hero-split-text" style="transform:translateX(0);text-align:right;width:100%;padding-right:8vw;color:var(--accent);">CON AMORE.</h1>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── INTRO / STORIA (R-6 2-col) ───────────────────── -->
+  <section id="storia" style="padding:120px 0;background:var(--bg2);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+      <div class="intro-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
+        <div class="reveal">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=900&auto=format&fit=crop" alt="Interno del Bistro con Amore" style="width:100%;height:520px;object-fit:cover;border-radius:4px;filter:brightness(0.88);">
+        </div>
+        <div class="reveal" style="transition-delay:0.15s;">
+          <span class="badge">La nostra filosofia</span>
+          <h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;line-height:1.15;margin-bottom:1.5rem;">Un posto dove <em>stare bene</em> prima ancora di mangiare.</h2>
+          <p style="color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-weight:300;">
+            A Verona, a due passi dall'Arena, la cucina di Bistro con Amore lavora su produttori che selezioniamo di persona: formaggi affinati a latte crudo, salumi da piccoli norcini del Veronese, pasta tirata a mano la mattina stessa.
+          </p>
+          <p style="color:var(--muted);line-height:1.8;margin-bottom:2rem;font-weight:300;">
+            I vini cambiano ogni mese. Seguiamo le stagioni, i vignaioli naturali, le cantine che lavorano senza trucchi. Il risultato è una carta corta, curata, dove ogni etichetta ha una storia da raccontare.
+          </p>
+          <div class="stats-row" style="display:flex;gap:2.5rem;margin-bottom:2.5rem;">
+            <div>
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);">4,8</div>
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-top:0.2rem;">su Google</div>
+            </div>
+            <div>
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);">9,4</div>
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-top:0.2rem;">su TheFork</div>
+            </div>
+            <div>
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);">1.271</div>
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-top:0.2rem;">recensioni</div>
+            </div>
+          </div>
+          <a href="#prenota" class="btn-outline">Prenota il tuo tavolo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── GALLERY (R-3 grid + R-6 overlay) ───────────────────── -->
+  <section id="piatti" style="padding:100px 0;background:var(--bg);">
+    <div style="max-width:1400px;margin:0 auto;padding:0 2rem;">
+      <div class="fade-up" style="margin-bottom:3rem;max-width:600px;">
+        <span class="badge">La cucina</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;line-height:1.2;margin-top:0.5rem;">Ogni piatto racconta il territorio che lo ha prodotto.</h2>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- 1: tall -->
+        <div class="gallery-item tall reveal">
+          <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=900&auto=format&fit=crop" alt="Secondo piatto">
+          <div class="overlay">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);">Secondi di carne</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Tagli selezionati, cotture precise</p>
+          </div>
+        </div>
+        <!-- 2: normale -->
+        <div class="gallery-item reveal" style="transition-delay:0.08s;">
+          <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=900&auto=format&fit=crop" alt="Pasta fresca">
+          <div class="overlay">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);">Pasta fatta a mano</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Tirata ogni mattina, semola di Altamura</p>
+          </div>
+        </div>
+        <!-- 3: normale -->
+        <div class="gallery-item reveal" style="transition-delay:0.16s;">
+          <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=900&auto=format&fit=crop" alt="Vini selezionati">
+          <div class="overlay">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);">Vini di ricerca</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Vignaioli naturali, carta che cambia</p>
+          </div>
+        </div>
+        <!-- 4: wide -->
+        <div class="gallery-item wide reveal" style="transition-delay:0.12s;">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop" alt="Interno bistro">
+          <div class="overlay">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);">Atmosfera intima</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Tavoli all'aperto e serate d'opera lirica</p>
+          </div>
+        </div>
+        <!-- 5: normale -->
+        <div class="gallery-item reveal" style="transition-delay:0.2s;">
+          <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=900&auto=format&fit=crop" alt="Dessert tiramisu">
+          <div class="overlay">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);">Dolci fatti in casa</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Il tiramisù migliore di Verona (parola dei nostri ospiti)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── MENU (tab + dotted-leader) ───────────────────── -->
+  <section id="menu" style="padding:100px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div style="max-width:1000px;margin:0 auto;padding:0 2.5rem;">
+      <div class="fade-up" style="text-align:center;margin-bottom:3.5rem;">
+        <span class="badge">La carta</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;margin-top:0.5rem;">Stagionale, <em style="color:var(--accent);">sempre in evoluzione</em></h2>
+      </div>
+
+      <!-- Tab nav -->
+      <div style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:3.5rem;border-bottom:1px solid var(--border);padding-bottom:0;" id="menu-tabs">
+        <button class="tab-btn active" data-cat="antipasti">Antipasti</button>
+        <button class="tab-btn" data-cat="primi">Primi</button>
+        <button class="tab-btn" data-cat="secondi">Secondi</button>
+        <button class="tab-btn" data-cat="dolci">Dolci</button>
+        <button class="tab-btn" data-cat="vini">Vini</button>
+      </div>
+
+      <!-- Menu items grid -->
+      <div id="menu-items" class="menu-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem 4rem;min-height:360px;">
+        <!-- JS inject -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── PEAK PARALLAX ───────────────────── -->
+  <div class="peak-section" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1920&auto=format&fit=crop');">
+    <div style="position:absolute;inset:0;background:rgba(10,10,11,0.65);"></div>
+    <div style="position:relative;z-index:2;text-align:center;max-width:700px;padding:0 2rem;" class="fade-up">
+      <iconify-icon icon="solar:music-note-2-bold" width="44" style="color:var(--accent);display:block;margin:0 auto 1.5rem;"></iconify-icon>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.8rem);margin-bottom:1.2rem;line-height:1.15;">
+        Il mercoledì sera, la cucina si ferma.<br>Parla l'opera lirica.
+      </h2>
+      <p style="color:rgba(255,255,255,0.7);font-size:1.1rem;font-weight:300;max-width:500px;margin:0 auto;">
+        Cene speciali con musica dal vivo. Posti limitati, prenotazione consigliata.
+      </p>
+    </div>
+  </div>
+
+  <!-- ───────────────────── TESTIMONIALS (R-6 carousel) ───────────────────── -->
+  <section id="ospiti" style="padding:100px 0;background:var(--bg);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+      <div class="fade-up" style="margin-bottom:3rem;">
+        <span class="badge">Dicono di noi</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.8rem;margin-top:0.5rem;">
+          Voci dai nostri <em style="color:var(--accent);">ospiti.</em>
+        </h2>
+        <p style="color:var(--muted);margin-top:0.8rem;font-size:0.9rem;">
+          4,8 su Google · 9,4 su TheFork · 1.271 recensioni
+        </p>
+      </div>
+
+      <div class="testimonial-carousel fade-up" style="transition-delay:0.15s;">
+        <div class="testimonial-card">
+          <div style="display:flex;gap:3px;margin-bottom:1.2rem;">
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+          </div>
+          <p style="font-style:italic;font-size:1.05rem;color:rgba(255,255,255,0.82);line-height:1.75;margin-bottom:1.5rem;">"Piatti curati e servizio impeccabile. Comodo per chi poi va ai teatri nelle vicinanze — abbiamo fatto tappa qui prima dello spettacolo e non avremmo potuto scegliere meglio."</p>
+          <span style="font-family:'Inter',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);font-weight:600;">— Marta V. · Google</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div style="display:flex;gap:3px;margin-bottom:1.2rem;">
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+          </div>
+          <p style="font-style:italic;font-size:1.05rem;color:rgba(255,255,255,0.82);line-height:1.75;margin-bottom:1.5rem;">"Siamo stati accolti con lo sgabello per le borse e il cameriere che si è preso cura dei cappotti. Posto intimo, atmosfera che ti mette subito a tuo agio. Il cibo era all'altezza dell'accoglienza."</p>
+          <span style="font-family:'Inter',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);font-weight:600;">— Federica & Luca · TheFork</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div style="display:flex;gap:3px;margin-bottom:1.2rem;">
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="14" style="color:var(--accent);"></iconify-icon>
+          </div>
+          <p style="font-style:italic;font-size:1.05rem;color:rgba(255,255,255,0.82);line-height:1.75;margin-bottom:1.5rem;">"Our favourite dining experience in Verona. The wine list was exceptional — small producers you won't find elsewhere. My girlfriend said it was the best tiramisu she's ever had. We'll be back."</p>
+          <span style="font-family:'Inter',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);font-weight:600;">— James M. · Google</span>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);">
+        ← scorri per leggere altre recensioni →
+      </p>
+    </div>
+  </section>
+
+  <!-- ───────────────────── CTA PRENOTA ───────────────────── -->
+  <section id="prenota" style="padding:100px 0;background:var(--bg2);border-top:1px solid var(--border);">
+    <div style="max-width:700px;margin:0 auto;padding:0 2.5rem;text-align:center;" class="fade-up">
+      <span class="badge">Prenota</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);margin:1rem 0 1.2rem;line-height:1.15;">
+        Il tuo tavolo ti aspetta.
+      </h2>
+      <p style="color:var(--muted);margin-bottom:0.6rem;font-size:1rem;font-weight:300;line-height:1.7;">
+        Bistro con Amore apre dalle 12 alle 23, tutti i giorni tranne il martedì.<br>
+        Puoi prenotare online su Quandoo e TheFork, oppure chiamarci direttamente.
+      </p>
+      <p style="color:rgba(197,160,89,0.7);font-size:0.8rem;margin-bottom:2.5rem;">Cancellazione gratuita fino a 24h prima.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2.5rem;">
+        <a href="tel:0452066009" class="btn-solid">
+          <iconify-icon icon="solar:phone-bold" width="16" style="vertical-align:middle;margin-right:0.4rem;"></iconify-icon>
+          045 206 6009
+        </a>
+        <a href="https://www.thefork.it" target="_blank" rel="noopener" class="btn-outline">Prenota su TheFork</a>
+        <a href="https://www.quandoo.it" target="_blank" rel="noopener" class="btn-outline">Prenota su Quandoo</a>
+      </div>
+
+      <!-- Orari -->
+      <div style="display:inline-grid;grid-template-columns:auto auto;gap:0.6rem 2rem;text-align:left;border:1px solid var(--border);padding:1.8rem 2.5rem;margin-top:1rem;">
+        <span style="font-size:0.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Mercoledì – Lunedì</span>
+        <span style="font-size:0.82rem;color:var(--text);">12:00 – 23:00</span>
+        <span style="font-size:0.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Martedì</span>
+        <span style="font-size:0.82rem;color:rgba(197,160,89,0.6);">Chiuso</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── MAPPA + CONTATTI ───────────────────── -->
+  <section id="contatti" style="padding:80px 0;background:var(--bg);border-top:1px solid var(--border);">
+    <div id="contatti-grid" style="max-width:1200px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+      <div class="reveal">
+        <h3 style="font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,1.8rem);margin-bottom:1.5rem;">Come raggiungerci</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem;">
+          <div style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <iconify-icon icon="solar:map-point-linear" width="18" style="color:var(--accent);flex-shrink:0;margin-top:2px;"></iconify-icon>
+            <span style="color:var(--muted);font-size:0.9rem;">Via Guglielmo Marconi, 17<br>37122 Verona VR</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem;">
+            <iconify-icon icon="solar:phone-linear" width="18" style="color:var(--accent);flex-shrink:0;"></iconify-icon>
+            <a href="tel:0452066009" style="color:var(--muted);font-size:0.9rem;text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">045 206 6009</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem;">
+            <iconify-icon icon="solar:clock-circle-linear" width="18" style="color:var(--accent);flex-shrink:0;"></iconify-icon>
+            <span style="color:var(--muted);font-size:0.9rem;">Lun–Mer–Gio–Ven–Sab–Dom: 12–23</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem;">
+            <iconify-icon icon="solar:sun-fog-linear" width="18" style="color:var(--accent);flex-shrink:0;"></iconify-icon>
+            <span style="color:var(--muted);font-size:0.9rem;">Tavoli all'aperto disponibili</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem;">
+            <iconify-icon icon="solar:music-note-linear" width="18" style="color:var(--accent);flex-shrink:0;"></iconify-icon>
+            <span style="color:var(--muted);font-size:0.9rem;">Serate con musica d'opera lirica</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.15s;">
+        <iframe
+          src="https://www.google.com/maps?q=Via+Guglielmo+Marconi+17,+37122+Verona+VR&output=embed"
+          width="100%"
+          height="360"
+          style="border:0;border-radius:4px;filter:brightness(0.75) contrast(1.1);"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mappa Bistro con Amore Verona">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── FOOTER ───────────────────── -->
+  <footer style="padding:60px 0;background:var(--bg2);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+      <div id="footer-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;">
+        <div>
+          <a href="#" class="logo" style="display:block;margin-bottom:1rem;">Bistro <span style="color:var(--accent);">con Amore</span></a>
+          <p style="color:var(--muted);font-size:0.85rem;line-height:1.7;">Cucina gourmet e vini di ricerca<br>nel cuore di Verona.</p>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+            <a href="#" style="color:var(--muted);transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+              <iconify-icon icon="mdi:instagram" width="20"></iconify-icon>
+            </a>
+            <a href="#" style="color:var(--muted);transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+              <iconify-icon icon="mdi:facebook" width="20"></iconify-icon>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Inter',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:1.2rem;">Prenota</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.7rem;">
+            <li><a href="tel:0452066009" style="color:var(--muted);font-size:0.85rem;text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">045 206 6009</a></li>
+            <li><a href="https://www.thefork.it" target="_blank" rel="noopener" style="color:var(--muted);font-size:0.85rem;text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">TheFork</a></li>
+            <li><a href="https://www.quandoo.it" target="_blank" rel="noopener" style="color:var(--muted);font-size:0.85rem;text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Quandoo</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-family:'Inter',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:1.2rem;">Dove siamo</h4>
+          <p style="color:var(--muted);font-size:0.85rem;line-height:1.7;">Via G. Marconi, 17<br>37122 Verona VR<br><br>Lun–Dom (escluso mar): 12:00–23:00</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+        <span style="color:var(--muted);font-size:0.75rem;">© 2026 Bistro con Amore Vini e Cucina. Tutti i diritti riservati.</span>
+        <span style="color:var(--muted);font-size:0.75rem;">P.IVA: demo — Verona</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ───────────────────── JS ───────────────────── -->
+  <script>
+    // ═══ 1. Scroll Expansion Hero ═══
+    (function(){
+      let progress = 0;
+      let expanded = false;
+      let touchStartY = 0;
+      const isMobile = () => window.innerWidth < 768;
+
+      const media      = document.getElementById('hero-media');
+      const heroBg     = document.getElementById('hero-bg');
+      const content    = document.getElementById('hero-content');
+      const overlay    = document.getElementById('hero-media-overlay');
+      const titleL     = document.getElementById('title-left');
+      const titleR     = document.getElementById('title-right');
+      const labelTop   = document.getElementById('label-top');
+      const labelBot   = document.getElementById('label-bottom');
+
+      function update() {
+        const mob = isMobile();
+        const vis = Math.min(progress, 1);
+        const w   = 280 + vis * (mob ? 600 : 1200);
+        const h   = 380 + vis * (mob ? 180 : 380);
+        const tx  = vis * (mob ? 160 : 140);
+        const showContent = progress >= 1.0;
+
+        media.style.width  = w + 'px';
+        media.style.height = h + 'px';
+        heroBg.style.opacity = Math.max(0, 1 - progress * 1.2);
+        overlay.style.opacity = showContent ? 0.62 : 0.18;
+        content.style.opacity = showContent ? 1 : 0;
+        content.style.pointerEvents = showContent ? 'auto' : 'none';
+
+        titleL.style.transform   = `translateX(-${tx}vw)`;
+        titleR.style.transform   = `translateX(${tx}vw)`;
+        labelTop.style.transform = `translateX(-${tx}vw)`;
+        labelBot.style.transform = `translateX(${tx}vw)`;
+      }
+
+      window.addEventListener('wheel', function(e){
+        if (expanded && e.deltaY < 0 && window.scrollY <= 5) {
+          expanded = false; e.preventDefault();
+        } else if (!expanded) {
+          e.preventDefault();
+          progress = Math.min(Math.max(progress + e.deltaY * 0.0009, 0), 1.5);
+          if (progress >= 1.5) expanded = true;
+          update();
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: false });
+      window.addEventListener('touchmove', function(e){
+        if (!touchStartY) return;
+        const dy = touchStartY - e.touches[0].clientY;
+        if (expanded && dy < -20 && window.scrollY <= 5) {
+          expanded = false; e.preventDefault();
+        } else if (!expanded) {
+          e.preventDefault();
+          progress = Math.min(Math.max(progress + dy * (dy < 0 ? 0.008 : 0.005), 0), 1.5);
+          if (progress >= 1.5) expanded = true;
+          touchStartY = e.touches[0].clientY;
+          update();
+        }
+      }, { passive: false });
+      window.addEventListener('touchend', () => { touchStartY = 0; });
+      window.addEventListener('scroll', () => { if (!expanded) window.scrollTo(0,0); });
+    })();
+
+    // ═══ 2. Header scroll ═══
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ═══ 3. Mobile menu ═══
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+    document.querySelectorAll('#mobileMenu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+    });
+
+    // ═══ 4. Scroll reveal ═══
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1, rootMargin: '-40px' });
+
+    const fuObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '-40px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+    document.querySelectorAll('.fade-up').forEach(el => fuObs.observe(el));
+
+    // ═══ 5. Menu data ═══
+    const menuData = {
+      antipasti: [
+        { name: 'Tagliere del Bistrò',          desc: 'Salumi del Veronese, formaggi a latte crudo affinati, miele di castagno e crostini al burro.',         price: '18 €' },
+        { name: 'Carpaccio di Manzo',            desc: 'Fassona piemontese battuta al coltello, rucola selvatica, scaglie di Grana 36 mesi, olio del Garda.', price: '14 €' },
+        { name: 'Burrata con Pomodorini Confit', desc: 'Burrata pugliese, pomodorini di Pachino appassiti al forno, basilico fresco, aceto balsamico DOP.',   price: '13 €' },
+        { name: 'Zuppa di Cipolle Gratinata',    desc: 'Ricetta classica, cipolla di Tropea caramellata, brodo di carne, crostino di sourdough e Gruyère.',   price: '11 €' }
+      ],
+      primi: [
+        { name: 'Tagliatelle al Ragù Bianco',    desc: 'Pasta fresca tirata a mano, ragù di vitello e maiale con erbe aromatiche del Garda, Grana grattugiato.', price: '16 €' },
+        { name: 'Risotto all\'Amarone',           desc: 'Riso Carnaroli, riduzione di Amarone della Valpolicella, midollo di bue, mantecato con burro delle Dolomiti.', price: '18 €' },
+        { name: 'Gnocchi di Patata Viola',        desc: 'Gnocchi fatti a mano, fonduta di Asiago stagionato, tartufo nero estivo, erba cipollina.',               price: '17 €' },
+        { name: 'Minestra di Fagioli Borlotti',   desc: 'Fagioli di Lamon, lardo di Colonnata, rosmarino, fettunta di pane di casa bruciato.',                    price: '12 €' }
+      ],
+      secondi: [
+        { name: 'Filetto di Manzo in Crosta',    desc: 'Filetto di Scottona avvolta in erbette e lardo, patate arrosto al rosmarino, jus al vino rosso.',       price: '28 €' },
+        { name: 'Guancia di Vitello Brasata',     desc: 'Brasata in Valpolicella Ripasso per 6 ore, purè di patate al burro nocciola, gremolata.',               price: '24 €' },
+        { name: 'Branzino al Cartoccio',          desc: 'Branzino del Mediterraneo, olive taggiasche, capperi di Pantelleria, patate novelle e limone.',         price: '22 €' },
+        { name: 'Cotoletta alla Veronese',        desc: 'Cotoletta di vitello, panatura al Grana e timo, burro chiarificato, insalata di stagione.',             price: '20 €' }
+      ],
+      dolci: [
+        { name: 'Tiramisù del Bistrò',           desc: 'La nostra versione classica: mascarpone fresco, savoiardi artigianali, caffè espresso napoletano.', price: '8 €' },
+        { name: 'Panna Cotta alla Vaniglia',      desc: 'Panna cotta al baccello di vaniglia Bourbon, coulis di frutti di bosco freschi.',                  price: '7 €' },
+        { name: 'Selezione di Formaggi',          desc: 'Tre formaggi del territorio, miele, noci tostate e mostarda di frutta.',                           price: '14 €' },
+        { name: 'Soufflé al Cioccolato',          desc: 'Cuore fondente 72%, gelato alla crema di Mantova, polvere di cacao. Da ordinare in anticipo.',    price: '9 €' }
+      ],
+      vini: [
+        { name: 'Amarone della Valpolicella',     desc: 'Selezione di piccole cantine. Chiedi al nostro sommelier per la bottiglia consigliata del mese.',  price: 'da 45 €' },
+        { name: 'Soave Classico DOC',             desc: 'Bianco del Veronese, fresco e minerale. Perfetto con i primi e il pesce.',                         price: 'da 28 €' },
+        { name: 'Vino Naturale del Mese',         desc: 'Una selezione che cambia mensilmente. Chiedi al personale per la storia del produttore.',          price: 'da 32 €' },
+        { name: 'Calice della Casa',              desc: 'Rosso o bianco, selezione del giorno tra i vignaioli che seguiamo da anni.',                       price: '6 €' }
+      ]
+    };
+
+    function renderMenu(cat) {
+      const items = menuData[cat] || [];
+      const container = document.getElementById('menu-items');
+      container.innerHTML = items.map((item, i) => `
+        <div class="menu-item fade-in-fast" style="animation-delay:${i*0.08}s;">
+          <div class="menu-item-header">
+            <h4>${item.name}</h4>
+            <span class="dotted-line"></span>
+            <span class="menu-price">${item.price}</span>
+          </div>
+          <p class="menu-desc">${item.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        renderMenu(e.currentTarget.dataset.cat);
+      });
+    });
+
+    renderMenu('antipasti');
+  </script>
+
+</body>
+</html>
